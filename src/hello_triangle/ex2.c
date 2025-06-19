@@ -22,21 +22,41 @@ const char *vertexShaderSource = "#version 330 core\n"
   " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
   "}\0";
 
-const char *fragmentShaderSourceOrange = "#version 330 core\n"
+const char *fragmentShaderSource = "#version 330 core\n"
   "out vec4 FragColor;\n"
   "void main()\n"
   "{\n"
   " FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
   "}\0";
 
-const char *fragmentShaderSourceYellow = "#version 330 core\n"
-  "out vec4 FragColor;\n"
-  "void main()\n"
-  "{\n"
-  " FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
-  "}\0";
+int main() {
+  glfwInit();
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-unsigned int createShaderProgram(const char* fragmentShaderSource) {
+#ifdef __APPLE__
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+  GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+
+  if (window == NULL) {
+    printf("Failed to create GLFW window\n");
+    glfwTerminate();
+    return -1;
+  }
+  glfwMakeContextCurrent(window);
+
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    printf("Failed to initialize GLAD\n");
+    return -1;
+  }
+
+  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+  // create shader program
+
   // vertex shader to process initial vertex data
   unsigned int vertexShader;
   vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -77,42 +97,10 @@ unsigned int createShaderProgram(const char* fragmentShaderSource) {
     printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s", infoLog);
   }
 
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader);
-
-  return shaderProgram;
-}
-
-int main() {
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-  GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
-
-  if (window == NULL) {
-    printf("Failed to create GLFW window\n");
-    glfwTerminate();
-    return -1;
-  }
-  glfwMakeContextCurrent(window);
-
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    printf("Failed to initialize GLAD\n");
-    return -1;
-  }
-
-  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-  unsigned int shaderProgramOrange = createShaderProgram(fragmentShaderSourceOrange);
-  unsigned int shaderProgramYellow = createShaderProgram(fragmentShaderSourceYellow);
+  
 
   // create triangles
+
   float vertices1[] = {
     -0.76f, -0.5f, 0.0f,
     -0.38f, 0.5f, 0.0f,
@@ -147,10 +135,9 @@ int main() {
     glClearColor(0.2f, 0.3f, 0.3f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glUseProgram(shaderProgramOrange);
+    glUseProgram(shaderProgram);
     glBindVertexArray(VAOs[0]);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    glUseProgram(shaderProgramYellow);
     glBindVertexArray(VAOs[1]);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -158,10 +145,11 @@ int main() {
     glfwPollEvents();
   }
 
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader);
   glDeleteVertexArrays(2, VAOs);
   glDeleteBuffers(2, VBOs);
-  glDeleteProgram(shaderProgramOrange);
-  glDeleteProgram(shaderProgramYellow);
+  glDeleteProgram(shaderProgram);
 
   glfwTerminate();
   return 0;
