@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 #include <math.h>
-#include "shader.h"
 
 // handle when window size changes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -41,9 +40,6 @@ unsigned int createShaderProgram(const char* fragmentShaderSource) {
   vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
   glCompileShader(vertexShader);
-
-  Shader s;
-  shaderInit(&s, vertexShaderSource, fragmentShaderSource);
 
   int success;
   char infoLog[512];

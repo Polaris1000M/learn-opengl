@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/maxwellchen/Projects/learn-opengl/src/main.c" "CMakeFiles/LearnOpenGL.dir/src/main.c.o" "gcc" "CMakeFiles/LearnOpenGL.dir/src/main.c.o.d"
+  "/Users/maxwellchen/Projects/learn-opengl/src/shader.c" "CMakeFiles/LearnOpenGL.dir/src/shader.c.o" "gcc" "CMakeFiles/LearnOpenGL.dir/src/shader.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

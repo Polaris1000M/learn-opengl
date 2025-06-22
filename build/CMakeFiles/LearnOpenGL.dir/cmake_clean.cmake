@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/LearnOpenGL.dir/src/main.c.o"
   "CMakeFiles/LearnOpenGL.dir/src/main.c.o.d"
+  "CMakeFiles/LearnOpenGL.dir/src/shader.c.o"
+  "CMakeFiles/LearnOpenGL.dir/src/shader.c.o.d"
   "bin/LearnOpenGL"
   "bin/LearnOpenGL.pdb"
 )

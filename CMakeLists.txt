@@ -15,8 +15,13 @@ set_target_properties(glfw PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/libs
 )
 
-add_executable(LearnOpenGL src/main.c)
+add_executable(LearnOpenGL
+  src/main.c
+  src/shader.c
+)
 target_include_directories(LearnOpenGL PRIVATE include)
+
+target_include_directories(LearnOpenGL PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 target_link_libraries(LearnOpenGL PRIVATE glad glfw ${CMAKE_DL_LIBS})
 
