@@ -1,4 +1,0 @@
-/Users/maxwellchen/Projects/learn-opengl/build/CMakeFiles/glad.dir
-/Users/maxwellchen/Projects/learn-opengl/build/CMakeFiles/LearnOpenGL.dir
-/Users/maxwellchen/Projects/learn-opengl/build/CMakeFiles/edit_cache.dir
-/Users/maxwellchen/Projects/learn-opengl/build/CMakeFiles/rebuild_cache.dir
