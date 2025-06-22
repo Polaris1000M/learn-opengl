@@ -49,9 +49,9 @@ int main() {
   shaderInit(&s, "../src/vertex_shader", "../src/fragment_shader");
 
   float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    0.0f, 0.5f, 0.0f,
+    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+    0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f
   };
 
   unsigned int VBO, VAO;
@@ -64,8 +64,12 @@ int main() {
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
   // specify position for coordinates
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) 0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) 0);
   glEnableVertexAttribArray(0);
+
+  // specify position of color
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
 
   shaderUse(&s);
   shaderSetFloat(&s, "xOffset", 0.5);
