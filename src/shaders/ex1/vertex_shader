@@ -6,12 +6,6 @@ out vec3 ourColor;
 uniform int xOffset;
 
 void main() {
-  if(aPos.y == -0.5) {
-    gl_Position = vec4(aPos.x, 0.5f, aPos.z, 1.0);
-  }
-  else {
-    gl_Position = vec4(aPos.x, -0.5f, aPos.z, 1.0);
-  }
-
+  gl_Position = vec4(aPos.x, -aPos.y, aPos.z, 1.0);
   ourColor = aColor;
 }
