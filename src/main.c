@@ -53,10 +53,10 @@ int main() {
   shaderInit(&s, "../src/VS", "../src/FS");
 
   Texture container;
-  textureInitOpaque(&container, GL_TEXTURE0, "../assets/container.jpg");
+  textureInit(&container, GL_TEXTURE0, "../assets/container.jpg", 0, 0);
 
   Texture smiley;
-  textureInitTransparent(&smiley, GL_TEXTURE1, "../assets/awesomeface.png");
+  textureInit(&smiley, GL_TEXTURE1, "../assets/awesomeface.png", 1, 1);
   
   float vertices[] = {
     0.5f, 0.5, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,

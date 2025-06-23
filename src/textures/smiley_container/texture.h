@@ -6,8 +6,6 @@ typedef struct Texture {
   unsigned int textureUnit;
 } Texture;
 
-void textureInitOpaque(Texture* t, unsigned int textureUnit, const char* textureSource);
-
-void textureInitTransparent(Texture* t, unsigned int textureUnit, const char* textureSource);
+void textureInit(Texture* t, unsigned int textureUnit, const char* textureSource, int flip, int transparent);
 
 #endif
