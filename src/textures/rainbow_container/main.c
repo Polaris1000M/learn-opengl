@@ -52,12 +52,9 @@ int main() {
   Shader s;
   shaderInit(&s, "../src/VS", "../src/FS");
 
-  Texture container;
-  textureInitOpaque(&container, GL_TEXTURE0, "../assets/container.jpg");
+  Texture t;
+  textureInit(&t, "../assets/container.jpg");
 
-  Texture smiley;
-  textureInitTransparent(&smiley, GL_TEXTURE1, "../assets/awesomeface.png");
-  
   float vertices[] = {
     0.5f, 0.5, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
     0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
@@ -97,8 +94,8 @@ int main() {
   glEnableVertexAttribArray(2);
 
   shaderUse(&s);
-  shaderSetInt(&s, "texture1", 0);
-  shaderSetInt(&s, "texture2", 1);
+  shaderSetFloat(&s, "radiusSquared", 0.25);
+  shaderSetFloat(&s, "aspectRatio", (float) WINDOW_HEIGHT / (float) WINDOW_WIDTH);
 
   while(!glfwWindowShouldClose(window)) {
     processInput(window);

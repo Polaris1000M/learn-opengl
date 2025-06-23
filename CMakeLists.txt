@@ -18,6 +18,7 @@ set_target_properties(glfw PROPERTIES
 add_executable(LearnOpenGL
   src/main.c
   src/shader.c
+  src/texture.c
 )
 target_include_directories(LearnOpenGL PRIVATE include)
 

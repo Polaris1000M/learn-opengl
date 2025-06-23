@@ -23,7 +23,7 @@ char* readShader(const char* shaderPath) {
   buffer = calloc(1, shaderSize + 1);
 
   if(!buffer) {
-    printf("ERROR::SHADER::FAILED_TO_ALLOCATE_BUFFER: %s\n", shaderPath);
+    printf("ERROR::SHADER::FAILED_TO_ALLOCATE_BUFFER\n");
     buffer = 0;
     return buffer;
   }
