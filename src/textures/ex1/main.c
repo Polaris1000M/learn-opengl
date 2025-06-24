@@ -1,6 +1,5 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <cglm/cglm.h>
 #include <stdio.h>
 #include <math.h>
 #include "shader.h"
@@ -60,10 +59,10 @@ int main() {
   textureInit(&smiley, GL_TEXTURE1, "../assets/awesomeface.png", 1, 1);
   
   float vertices[] = {
-    0.5f, 0.5, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
-    0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
-    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-    -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f // top left
+    0.5f, 0.5, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+    0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+    -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f
   };
 
   unsigned int indices[] = {
@@ -100,15 +99,6 @@ int main() {
   shaderUse(&s);
   shaderSetInt(&s, "texture1", 0);
   shaderSetInt(&s, "texture2", 1);
-
-  vec4 vec = {1.0f, 0.0f, 0.0f, 1.0f};
-  mat4 trans = GLM_MAT4_IDENTITY;
-  glm_rotate_z(trans, glm_rad(90.0f), trans);
-  glm_scale(trans, (vec3) {0.5f, 0.5f, 0.5f});
-  glm_mat4_mulv(trans, vec, vec);
-
-  unsigned int transformLoc = glGetUniformLocation(s.ID, "transform");
-  glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const float*) trans);
 
   while(!glfwWindowShouldClose(window)) {
     processInput(window);
