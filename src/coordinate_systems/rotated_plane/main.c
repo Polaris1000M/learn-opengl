@@ -19,8 +19,8 @@ void processInput(GLFWwindow *window)
     glfwSetWindowShouldClose(window, 1);
 }
 
-const unsigned int WINDOW_HEIGHT = 800;
-const unsigned int WINDOW_WIDTH = 600;
+const unsigned int WINDOW_HEIGHT = 600;
+const unsigned int WINDOW_WIDTH = 800;
 
 int main() {
   // initalize the window
@@ -33,7 +33,7 @@ int main() {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-  GLFWwindow* window = glfwCreateWindow(WINDOW_HEIGHT, WINDOW_WIDTH, "LearnOpenGL", NULL, NULL);
+  GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "LearnOpenGL", NULL, NULL);
 
   if (window == NULL) {
     printf("Failed to create GLFW window\n");
@@ -60,10 +60,10 @@ int main() {
   textureInit(&smiley, GL_TEXTURE1, "../assets/awesomeface.png", 1, 1);
   
   float vertices[] = {
-    0.5f, 0.5, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
-    0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
-    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-    -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f // top left
+    0.5f, 0.5f, 0.0f, 1.0f, 1.0f, // top right
+    0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
+    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
+    -0.5f, 0.5f, 0.0f, 0.0f, 1.0f // top left
   };
 
   unsigned int indices[] = {
@@ -86,25 +86,21 @@ int main() {
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
   // specify position for coordinates
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) 0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) 0);
   glEnableVertexAttribArray(0);
 
-  // specify position for colors
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (3 * sizeof(float)));
-  glEnableVertexAttribArray(1);
-
   // specify position for texture coordinates
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (6 * sizeof(float)));
-  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) (3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
 
   shaderUse(&s);
   shaderSetInt(&s, "texture1", 0);
   shaderSetInt(&s, "texture2", 1);
 
   mat4 model= GLM_MAT4_IDENTITY;
-  glm_rotate_make(model, glm_rad(-55.0f), (vec3) {1.0f, 0.0f, 0.0f});
+  glm_rotate(model, glm_rad(-55.0f), (vec3) {1.0f, 0.0f, 0.0f});
   mat4 view = GLM_MAT4_IDENTITY;
-  glm_translate_make(view, (vec3) {0.0f, 0.0f, -3.0f});
+  glm_translate(view, (vec3) {0.0f, 0.0f, -3.0f});
   mat4 projection;
   glm_perspective(glm_rad(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f, 100.0f, projection); 
 
@@ -130,8 +126,10 @@ int main() {
   // clean up
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
+  glDeleteBuffers(1, &EBO);
   glDeleteProgram(s.ID);
 
   glfwTerminate();
   return 0;
 }
+
