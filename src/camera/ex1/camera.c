@@ -117,33 +117,12 @@ void cameraProcessKeys(Camera* c, GLFWwindow* window) {
     glm_vec3_scale(c->cameraUp, -cameraSpeed, mov);
     glm_vec3_add(c->cameraPos, mov, c->cameraPos);
   }
+
+  c->cameraPos[1] = 0.0f;
 }
 
 void cameraLookAt(Camera* c, mat4 view) {
   vec3 cameraTarget;
   glm_vec3_add(c->cameraPos, c->cameraFront, cameraTarget);
   glm_lookat(c->cameraPos, cameraTarget, c->cameraUp, view);
-}
-
-void cameraCustomLookAt(Camera* c, mat4 view) {
-  vec3 cameraDirection;
-  glm_vec3_negate_to(c->cameraFront, cameraDirection);
-
-  vec3 cameraRight;
-  glm_vec3_crossn(c->cameraUp, cameraDirection, cameraRight);
-
-  vec3 cameraUp;
-  glm_vec3_cross(cameraDirection, cameraRight, cameraUp);
-
-  mat4 translate = GLM_MAT4_IDENTITY;
-  vec3 negatePos;
-  glm_vec3_negate_to(c->cameraPos, negatePos);
-  glm_translate_make(translate, negatePos);
-  mat4 basis = {
-    {cameraRight[0], cameraUp[0], cameraDirection[0], 0.0f},
-    {cameraRight[1], cameraUp[1], cameraDirection[1], 0.0f},
-    {cameraRight[2], cameraUp[2], cameraDirection[2], 0.0f},
-    {0.0f, 0.0f, 0.0f, 1.0f}
-  };
-  glm_mat4_mul(basis, translate, view);
 }

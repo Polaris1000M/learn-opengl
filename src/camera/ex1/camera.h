@@ -31,7 +31,5 @@ void cameraProcessKeys(Camera* c, GLFWwindow *window);
 
 void cameraLookAt(Camera* c, mat4 view);
 
-void cameraCustomLookAt(Camera* c, mat4 view);
-
 #endif
 

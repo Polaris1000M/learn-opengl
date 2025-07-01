@@ -158,7 +158,7 @@ int main() {
     shaderSetMatrix(&s, "projection", projection);
 
     mat4 view;
-    cameraCustomLookAt(&c, view);
+    cameraLookAt(&c, view);
     shaderSetMatrix(&s, "view", view);
 
     glClearColor(0.0f, 0.0f, 0.0f,1.0f);
