@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <glad/glad.h>
+#include <cglm/cglm.h>
 
 // reads shader specified by filepath into C-string
 char* readShader(const char* shaderPath) {
@@ -106,4 +107,8 @@ void shaderSetInt(Shader* s, const char* name, int value) {
 
 void shaderSetFloat(Shader* s, const char* name, float value) {
   glUniform1f(glGetUniformLocation(s->ID, name), value); 
+}
+
+void shaderSetMatrix(Shader* s, const char* name, mat4 mat) {
+  glUniformMatrix4fv(glGetUniformLocation(s->ID, name), 1, GL_FALSE, (const float*) mat);
 }

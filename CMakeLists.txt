@@ -19,6 +19,7 @@ add_executable(LearnOpenGL
   src/main.c
   src/shader.c
   src/texture.c
+  src/camera.c
 )
 target_include_directories(LearnOpenGL PRIVATE include)
 
