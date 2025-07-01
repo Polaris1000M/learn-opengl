@@ -20,10 +20,9 @@ vec3 cameraFront = {0.0f, 0.0f, -1.0f};
 vec3 cameraUp = {0.0f, 1.0f, 0.0f};
 float lastTime = 0.0f;
 float deltaTime = 0.0f;
-float fov = 45.0f;
 
 // handle when window size changes
-void framebufferSizeCallback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
   glViewport(0, 0, width, height);
 }
@@ -104,17 +103,6 @@ void mouseInput(GLFWwindow *window, double xPos, double yPos) {
   glm_normalize_to(direction, cameraFront);
 }
 
-void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
-  fov -= (float) yOffset;
-  if(fov < 1.0f) {
-    fov = 1.0f;
-  }
-
-  if(fov > 45.0f) {
-    fov = 45.0f;
-  }
-}
-
 int main() {
   // initalize the window
   glfwInit();
@@ -133,17 +121,16 @@ int main() {
     return -1;
   }
   glfwMakeContextCurrent(window);
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  glfwSetCursorPosCallback(window, mouseInput);
 
   // load GLAD to retrieve OpenGL driver functions
-  if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     printf("Failed to initialize GLAD\n");
     return -1;
   }
 
-  glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
-  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-  glfwSetCursorPosCallback(window, mouseInput);
-  glfwSetScrollCallback(window, scrollCallback);
+  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
   Shader s;
   shaderInit(&s, "../src/VS", "../src/FS");
@@ -223,6 +210,10 @@ int main() {
   glEnable(GL_DEPTH_TEST);
 
   unsigned int modelLoc, projectionLoc, viewLoc;
+  mat4 projection = GLM_MAT4_IDENTITY;
+  glm_perspective(glm_rad(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f, 100.0f, projection); 
+  projectionLoc = glGetUniformLocation(s.ID, "projection");
+  glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, (const float*) projection);
 
   vec3 cubePositions[] = {
     {0.0f,  0.0f,  0.0f}, 
@@ -250,11 +241,6 @@ int main() {
     processInput(window, view);
     viewLoc = glGetUniformLocation(s.ID, "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (const float*) view);
-
-    mat4 projection = GLM_MAT4_IDENTITY;
-    glm_perspective(glm_rad(fov), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f, 100.0f, projection); 
-    projectionLoc = glGetUniformLocation(s.ID, "projection");
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, (const float*) projection);
 
     glClearColor(0.0f, 0.0f, 0.0f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
