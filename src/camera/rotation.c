@@ -15,9 +15,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // add user interactivity
 void processInput(GLFWwindow *window)
 {
-  if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+  if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     glfwSetWindowShouldClose(window, 1);
-  }
 }
 
 const unsigned int WINDOW_HEIGHT = 600;
@@ -155,55 +154,28 @@ int main() {
   }
 
   // radius of circle for rotation
-  vec3 cameraPos = {0.0f, 0.0f, 3.0f};
-  vec3 cameraFront = {0.0f, 0.0f, -1.0f};
-  vec3 cameraUp = {0.0f, 1.0f, 0.0f};
-
+  const float radius = 10.0f;
   while(!glfwWindowShouldClose(window)) {
     processInput(window);
-
-    // compute camera movements
-    const float cameraSpeed = 0.05f;
-    if(glfwGetKey(window, GLFW_KEY_W)) {
-      vec3 mov;
-      glm_vec3_scale(cameraFront, cameraSpeed, mov);
-      glm_vec3_add(cameraPos, mov, cameraPos);
-    }
-
-    if(glfwGetKey(window, GLFW_KEY_S)) {
-      vec3 mov;
-      glm_vec3_scale(cameraFront, -cameraSpeed, mov);
-      glm_vec3_add(cameraPos, mov, cameraPos);
-    }
-
-    if(glfwGetKey(window, GLFW_KEY_A)) {
-      vec3 mov;
-      glm_vec3_crossn(cameraFront, cameraUp, mov);
-      glm_vec3_scale(mov, -cameraSpeed, mov);
-      glm_vec3_add(cameraPos, mov, cameraPos);
-    }
-
-    if(glfwGetKey(window, GLFW_KEY_D)) {
-      vec3 mov;
-      glm_vec3_crossn(cameraFront, cameraUp, mov);
-      glm_vec3_scale(mov, cameraSpeed, mov);
-      glm_vec3_add(cameraPos, mov, cameraPos);
-    }
-
-    vec3 cameraTarget;
-    glm_vec3_add(cameraPos, cameraFront, cameraTarget);
-    mat4 view;
-    glm_lookat(cameraPos, cameraTarget, cameraUp, view);
-    viewLoc = glGetUniformLocation(s.ID, "view");
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (const float*) view);
-
 
     glClearColor(0.0f, 0.0f, 0.0f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    mat4 view = GLM_MAT4_IDENTITY;
+    vec3 cameraPos = {radius * cos(glfwGetTime()), 0.0f, radius * sin(glfwGetTime())};
+    glm_lookat(cameraPos, (vec3) {0.0f, 0.0f, 0.0f}, (vec3) {0.0f, 1.0f, 0.0f}, view);
+    viewLoc = glGetUniformLocation(s.ID, "view");
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (const float*) view);
+
     for(unsigned int i = 0; i < 10; i++) {
       mat4 model = GLM_MAT4_IDENTITY;
       glm_translate_make(model, cubePositions[i]);
+      if(i % 3 == 0) {
+        glm_rotate(model, glm_rad(50.0f) * (float) glfwGetTime(), (vec3) {1.0f, 0.3f, 0.5f});
+      }
+      else {
+        glm_rotate(model, glm_rad(20.0f * (float) i), (vec3) {1.0f, 0.3f, 0.5f});
+      }
       modelLoc = glGetUniformLocation(s.ID, "model");
       glUniformMatrix4fv(modelLoc, 1, GL_FALSE, (const float*) model);
 
