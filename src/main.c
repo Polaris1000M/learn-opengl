@@ -128,11 +128,6 @@ int main() {
   glEnable(GL_DEPTH_TEST);
 
   unsigned int modelLoc, viewLoc, projectionLoc;
-  mat4 view = GLM_MAT4_IDENTITY;
-  glm_translate_make(view, (vec3) {0.0f, 0.0f, -3.0f});
-  viewLoc = glGetUniformLocation(s.ID, "view");
-  glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (const float*) view);
-
   mat4 projection = GLM_MAT4_IDENTITY;
   glm_perspective(glm_rad(45.0f), (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, 0.1f, 100.0f, projection); 
   projectionLoc = glGetUniformLocation(s.ID, "projection");
@@ -158,11 +153,19 @@ int main() {
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, (const float*) model);
   }
 
+  // radius of circle for rotation
+  const float radius = 10.0f;
   while(!glfwWindowShouldClose(window)) {
     processInput(window);
 
     glClearColor(0.0f, 0.0f, 0.0f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    mat4 view = GLM_MAT4_IDENTITY;
+    vec3 cameraPos = {radius * cos(glfwGetTime()), 0.0f, radius * sin(glfwGetTime())};
+    glm_lookat(cameraPos, (vec3) {0.0f, 0.0f, 0.0f}, (vec3) {0.0f, 1.0f, 0.0f}, view);
+    viewLoc = glGetUniformLocation(s.ID, "view");
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (const float*) view);
 
     for(unsigned int i = 0; i < 10; i++) {
       mat4 model = GLM_MAT4_IDENTITY;
