@@ -55,7 +55,7 @@ int main() {
   textureInit(&container, GL_TEXTURE0, "../assets/container.jpg", 0, 0);
 
   Texture smiley;
-  textureInit(&smiley, GL_TEXTURE1, "../assets/awesomeface.png", 0, 1);
+  textureInit(&smiley, GL_TEXTURE1, "../assets/awesomeface.png", 1, 1);
 
   Camera c;
   cameraInit(&c, window);
